@@ -1,35 +1,34 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import axios from 'axios';
 
 function App() {
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
   useEffect(() => {
-    console.log(selectedFile)
-    if (selectedFile.length) {
-      const imgArr = selectedFile.map((img) => URL.createObjectURL(img));
-      console.log(imgArr)
+    if (uploadedFiles.length) {
+      const imgArr = uploadedFiles.map((img) => URL.createObjectURL(img));
       if (allFiles.length) {
         setAllFiles([ ...allFiles, ...imgArr ]);
       } else {
         setAllFiles([...imgArr]);
       }
     }
-   
-  }, [selectedFile]);
+  }, [uploadedFiles]);
 
   const handleFileSelect = (e) => {
-    setSelectedFile(Object.values(e.target.files));
+    setUploadedFiles(Object.values(e.target.files));
   }
 
-  const imgs = allFiles.map((file, i) => <img key={i} src={file}></img>);
+  const imgs = allFiles.map((file, i) => <img key={i} src={file} style={{ width: '30%', height: '30%', maxHeight: '' }}></img>);
 
   return (
     <>
       <input type="file" multiple onChange={handleFileSelect}></input>
-      {imgs}
+      <div style={{ display: 'flex', width: '100%', height: '100%', flexWrap: 'wrap', overflow: 'none', gap: '2px' }}>
+        {imgs}
+      </div>
+     
     </>
   )
 }
