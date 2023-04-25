@@ -3,31 +3,32 @@ import './App.css'
 import axios from 'axios';
 
 function App() {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
   useEffect(() => {
-    if (selectedFile) {
-      const img = URL.createObjectURL(selectedFile);
-      console.log(img)
+    console.log(selectedFile)
+    if (selectedFile.length) {
+      const imgArr = selectedFile.map((img) => URL.createObjectURL(img));
+      console.log(imgArr)
       if (allFiles.length) {
-        setAllFiles([ ...allFiles, img ]);
+        setAllFiles([ ...allFiles, ...imgArr ]);
       } else {
-        setAllFiles([img]);
+        setAllFiles([...imgArr]);
       }
     }
    
   }, [selectedFile]);
 
   const handleFileSelect = (e) => {
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(Object.values(e.target.files));
   }
 
   const imgs = allFiles.map((file, i) => <img key={i} src={file}></img>);
 
   return (
     <>
-      <input type="file" onChange={handleFileSelect}></input>
+      <input type="file" multiple onChange={handleFileSelect}></input>
       {imgs}
     </>
   )
