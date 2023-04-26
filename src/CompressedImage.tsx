@@ -2,60 +2,116 @@ import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import imageCompression from 'browser-image-compression';
 import './CompressedImage.css';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+
+const compressionFactor = 1;
+const maxResolution = 1920;
 
 const compressionOptions = {
-  maxSizeMB: 0.5,
-  maxWidthOrHeight: 960,
+  maxSizeMB: compressionFactor,
+  maxWidthOrHeight: maxResolution,
   useWebWorker: true
 }
 
-const handleDragStart = (e, ref) => {
-  ref.current.style.opacity = '0.4';
+const handleDragStart = (e, ref, dragRef, setPos) => {
+  ref.current.classList.add('isDragging');
+  dragRef.current.start = ref.current;
+  dragRef.current.setPosStart = setPos;
 }
-const handleDragEnd = (e, ref) => {
-  ref.current.style.opacity = '1';
+const handleDragEnd = (e, ref, dragRef) => {
+  ref.current.classList.remove('over');
+
+  const startOrder = dragRef.current.start.getAttribute('id');
+  const endOrder = dragRef.current.end.getAttribute('id');
+
+  dragRef.current.setPosStart(endOrder);
+  dragRef.current.setPosEnd(startOrder);
+
+  ref.current.classList.remove('isDragging');
 }
-const handleDragOver = (e, ref) => {
-  e.preventDefault();
-  return false;
+const handleDragOver = (e, ref, dragRef, setPos) => {
+  dragRef.current.end = e.target;
+  dragRef.current.setPosEnd = setPos;
 }
 const handleDragEnter = (e, ref) => {
   ref.current.classList.add('over');
+  
+  
 }
 const handleDragLeave = (e, ref) => {
   ref.current.classList.remove('over');
 }
 
-function CompressedImage({ file }) {
+const handleLoad = (setIsRendered, ref) => {
+  ref.current.classList.add('rendering');
+  const handleRendering = () => {
+    requestAnimationFrame(handleRender);
+  }
 
-  const ref = useRef(null);
+  const handleRender = () => {
+    ref.current.classList.remove('rendering');
+    ref.current.classList.add('rendered');
+    setIsRendered(true);
+  }
+
+  requestAnimationFrame(handleRendering);
+}
+
+function CompressedImage({ file, order, dragRef }) {
+
+  const [pos, setPos] = useState(order);
+  const ref = useRef();
 
   const [compressedImage, setCompressedImage] = useState(null);
-
+  const [isRendered, setIsRendered] = useState(false);
+  const dimensions = useRef([]);
+  
   useEffect(() => {
-
       const compressImage = async() => {
-        const compressedFile = await imageCompression(file, compressionOptions);
-        const compressedImage = URL.createObjectURL(compressedFile);
-        setCompressedImage(compressedImage);
+        try {
+          const image = new Image();
+          image.src = URL.createObjectURL(file);
+          image.onload = () => dimensions.current = [image.width, image.height];
+          
+          const compressedFile = await imageCompression(file, compressionOptions);
+          const compressedImage = URL.createObjectURL(compressedFile);
+          setCompressedImage(compressedImage);
+        } catch(err) {
+          console.log(err);
+        }
       }
       compressImage();
   }, []);
 
-
-  return (
-    <>
+  const image = 
+  (
+  <>
       <img 
+      id={pos}
+      src={compressedImage}
+      className="image-content"
+      style={{maxWidth: '100%', backgroundColor: 'black', cursor:'move'}}
       ref={ref}
       draggable="true"
-      src={compressedImage}
-      style={{maxHeight: '30%', maxWidth: '30%', cursor:'move'}}
-      onDragStart={(e) => handleDragStart(e, ref)}
-      onDragOver={(e) => handleDragOver(e, ref)}
+      onLoad={() => handleLoad(setIsRendered, ref)}
+      onDragStart={(e) => handleDragStart(e, ref, dragRef, setPos)}
+      onDragOver={(e) => handleDragOver(e, ref, dragRef, setPos)}
       onDragEnter={(e) => handleDragEnter(e, ref)}
       onDragLeave={(e) => handleDragLeave(e, ref)}
-      onDragEnd={(e) => handleDragEnd(e, ref)}
-      /> 
+      onDragEnd={(e) => handleDragEnd(e, ref, dragRef)}
+      />
+  </>)
+  console.log('img rendered', pos)
+  return (
+    <>
+      <div
+      className="image-container"
+      style={{display: 'flex', maxWidth: '19.6%', order: `${pos}`}}
+      >
+        {image}
+      </div>
     </>
   )
 }

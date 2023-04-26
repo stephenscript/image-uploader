@@ -1,5 +1,5 @@
 img:hover {
   box-sizing: border-box;
-  transform: scale(1.05);
+  transform: scale(1.25);
   transition: 0.5s;
 }

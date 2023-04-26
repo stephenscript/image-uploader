@@ -1,3 +1,53 @@
 .over {
-  border: 3px dotted rgb(0, 0, 0);
+  filter: sepia(100%)
+}
+
+.rendering {
+  display: none
+}
+
+.rendered {
+  animation: 1s blurIn;
+}
+
+.image-container {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.isDragging {
+  box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);
+  animation: 3s pulse;
+  animation-iteration-count: infinite;
+  transition: 1s;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);;
+  }
+
+  50% {
+    box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
+  }
+
+  90% {
+    box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);
+  }
+}
+
+@keyframes blurIn {
+  0% {
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    opacity: 0%;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    -moz-filter: blur(0px);
+    -o-filter: blur(0px);
+    -ms-filter: blur(0px);
+    opacity: 100%;
+  }
 }
