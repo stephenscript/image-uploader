@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import imageCompression from 'browser-image-compression';
+import CompressedImage from './CompressedImage';
 
-const compressionOptions = {
-  maxSizeMB: 1,
-  maxWidthOrHeight: 1920,
-  useWebWorker: true
-}
 
 function App() {
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -16,37 +11,28 @@ function App() {
   useEffect(() => {
 
     if (uploadedFiles.length) {
-
-      const updateFiles = async() => {
-
-        const imgArr = await uploadedFiles.map(async (image, i) => {
-          const compressedFile = await imageCompression(image, compressionOptions);
-          const compressedImage = URL.createObjectURL(compressedFile);
-         
-          const Image =  <img key={i} src={compressedImage} style={{ width: '30%', height: '30%', maxHeight: '' }} />
-          setImages([...images, Image]);
-        });
-        
-        if (allFiles.length) {
-          setAllFiles([ ...allFiles, ...imgArr ]);
-        } else {
-          setAllFiles([ ...imgArr ]);
-        }
+      if (images.length) {
+        setImages([ ...images, ...uploadedFiles.map((file, i) => <CompressedImage key={i} file={file} />) ]);
+      } else {
+        setImages(uploadedFiles.map((file, i) => <CompressedImage key={i} file={file} />));
       }
-    // console.log(images)
-    updateFiles();
-
     }
+
   }, [uploadedFiles]);
 
   const handleFileSelect = (e) => {
     setUploadedFiles(Object.values(e.target.files));
   }
 
+  useEffect(() => {
+    
+  }, [allFiles]);
+
+
   return (
     <>
       <input type="file" multiple onChange={handleFileSelect}></input>
-      <div style={{ display: 'flex', width: '100%', height: '100%', flexWrap: 'wrap', overflow: 'none', gap: '2px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', flexWrap: 'wrap', gap: '2px'}}>
         {images}
       </div>
      
