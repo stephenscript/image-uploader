@@ -93,7 +93,9 @@ function CompressedImage({ key, file, order, dragRef }) {
         className="x-button"
         onClick={(e, ref) => {
           const child = document.getElementById(pos).innerHTML = '';
+          // const parent = document.querySelector('images-container');
           delete dragRef.current.rawFiles[key];
+          parent.removeChild(child);
         }}
         >x</button>
           <img 
