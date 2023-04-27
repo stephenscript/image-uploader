@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import imageCompression from 'browser-image-compression';
 import './CompressedImage.css';
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { unmountComponentAtNode } from 'react-dom';
 
 
 const compressionFactor = 1;
@@ -59,7 +59,7 @@ const handleLoad = (setIsRendered, ref) => {
   requestAnimationFrame(handleRendering);
 }
 
-function CompressedImage({ file, order, dragRef }) {
+function CompressedImage({ key, file, order, dragRef }) {
 
   const [pos, setPos] = useState(order);
   const ref = useRef();
@@ -87,29 +87,39 @@ function CompressedImage({ file, order, dragRef }) {
 
   const image = 
   (
-  <>
-      <img 
-      id={pos}
-      src={compressedImage}
-      className="image-content"
-      style={{maxWidth: '100%', backgroundColor: 'black', cursor:'move'}}
-      ref={ref}
-      draggable="true"
-      onLoad={() => handleLoad(setIsRendered, ref)}
-      onDragStart={(e) => handleDragStart(e, ref, dragRef, setPos)}
-      onDragOver={(e) => handleDragOver(e, ref, dragRef, setPos)}
-      onDragEnter={(e) => handleDragEnter(e, ref)}
-      onDragLeave={(e) => handleDragLeave(e, ref)}
-      onDragEnd={(e) => handleDragEnd(e, ref, dragRef)}
-      />
+  <>  
+      <div className="image-content">
+        <button
+        className="x-button"
+        onClick={(e, ref) => {
+          const child = document.getElementById(pos).innerHTML = '';
+          delete dragRef.current.rawFiles[key];
+        }}
+        >x</button>
+          <img 
+          id={pos}
+          src={compressedImage}
+          style={{maxWidth: '100%', height: 'auto', backgroundColor: 'black', cursor:'move'}}
+          ref={ref}
+          draggable="true"
+          onLoad={() => handleLoad(setIsRendered, ref)}
+          onDragStart={(e) => handleDragStart(e, ref, dragRef, setPos)}
+          onDragOver={(e) => handleDragOver(e, ref, dragRef, setPos)}
+          onDragEnter={(e) => handleDragEnter(e, ref)}
+          onDragLeave={(e) => handleDragLeave(e, ref)}
+          onDragEnd={(e) => handleDragEnd(e, ref, dragRef)}
+          />
+      </div>
   </>)
-  console.log('img rendered', pos)
+
   return (
     <>
       <div
+      id={pos}
       className="image-container"
       style={{display: 'flex', maxWidth: '19.6%', order: `${pos}`}}
       >
+        <div className="x-button"></div>
         {image}
       </div>
     </>
