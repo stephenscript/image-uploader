@@ -59,7 +59,7 @@ const handleLoad = (setIsRendered, ref) => {
   requestAnimationFrame(handleRendering);
 }
 
-function CompressedImage({ key, file, order, dragRef }) {
+function CompressedImage({ file, order, dragRef, shortid }) {
 
   const [pos, setPos] = useState(order);
   const ref = useRef();
@@ -92,9 +92,11 @@ function CompressedImage({ key, file, order, dragRef }) {
         <button
         className="x-button"
         onClick={(e, ref) => {
-          const child = document.getElementById(pos).innerHTML = '';
-          // const parent = document.querySelector('images-container');
-          delete dragRef.current.rawFiles[key];
+       
+          const child = document.getElementById(pos);
+          const parent = document.querySelector('.images-container');
+          console.log('parent', parent, 'child', child)
+          delete dragRef.current.rawFiles[shortid];
           parent.removeChild(child);
         }}
         >x</button>

@@ -27,6 +27,7 @@ function App() {
         return (
           <CompressedImage
           key={key}
+          shortid={shortid}
           file={file}
           order={dragRef.current.maxIndex++}
           dragRef={dragRef}
