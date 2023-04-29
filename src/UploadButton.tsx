@@ -1,5 +1,5 @@
 import react from 'react'
-import UploadIcon from '@mui/icons-material/Upload';
+import { Upload }  from '@mui/icons-material';
 
 function UploadButton({ handleFileSelect, buttonStyle }) {
   if (!buttonStyle) {
@@ -18,7 +18,7 @@ function UploadButton({ handleFileSelect, buttonStyle }) {
       style={buttonStyle}
       title="Upload Images"
       >  
-        <UploadIcon  /> 
+        <Upload /> 
       </label>
     </>
   )

@@ -4,10 +4,9 @@ import CompressedImage from './CompressedImage';
 import UploadButton from './UploadButton';
 import SubmitButton from './SubmitButton';
 import uuid4 from 'uuid4';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { InsertPhoto } from '@mui/icons-material';
 
 function ImageUploader({ handleFileSubmit, uploadButtonStyle, submitButtonStyle, Width, Height }) {
-  console.log(Width)
   const ref = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [images, setImages] = useState([]);
