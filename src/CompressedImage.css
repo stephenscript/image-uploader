@@ -47,6 +47,11 @@
   cursor: pointer;
 }
 
+.spinner {
+  animation: 2s spin;
+  animation-iteration-count: infinite;
+}
+
 .x-button:active {
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0, 75%);
@@ -87,5 +92,19 @@
     -o-filter: blur(0px);
     -ms-filter: blur(0px);
     opacity: 100%;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
-import './ImageUploader.css'
-import CompressedImage from './CompressedImage';
-import UploadButton from './UploadButton';
-import SubmitButton from './SubmitButton';
+import { CompressedImage } from './CompressedImage';
 import uuid4 from 'uuid4';
-import { InsertPhoto } from '@mui/icons-material';
+import { UploadButton } from './UploadButton';
+import { SubmitButton } from './SubmitButton';
+import { BsCardImage } from 'react-icons/bs';
 
 function ImageUploader({ handleFileSubmit, uploadButtonStyle, submitButtonStyle, Width, Height }) {
   const ref = useRef(null);
@@ -45,10 +44,9 @@ function ImageUploader({ handleFileSubmit, uploadButtonStyle, submitButtonStyle,
     setUploadedFiles(Object.values(e.target.files));
   }
 
-
   const ImagePlaceholder = (
     <div style={{display: 'flex', paddingTop: '5%', gap: '20%', alignItems: 'center'}}>
-      <InsertPhotoIcon style={{transform: 'scale(4.8)'}}/>
+      <BsCardImage style={{transform: 'scale(4.8)'}}/>
       <div>Select the 'upload images' button to begin </div>
     </div>
     );
@@ -69,4 +67,4 @@ function ImageUploader({ handleFileSubmit, uploadButtonStyle, submitButtonStyle,
   )
 }
 
-export default ImageUploader
+export { ImageUploader }

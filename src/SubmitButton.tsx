@@ -47,4 +47,4 @@ function SubmitButton({ handleFileSubmit, files, buttonStyle, imageContainerRef 
   )
 }
 
-export default SubmitButton;
+export { SubmitButton };

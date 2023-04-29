@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import imageCompression from 'browser-image-compression';
 import './CompressedImage.css';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 const compressionFactor = 1;
 const maxResolution = 1920;
@@ -11,12 +12,14 @@ const compressionOptions = {
   useWebWorker: true
 }
 
+// image starts being dragged
 const handleDragStart = (e, ref, dragRef, setPos) => {
   ref.current.classList.add('isDragging');
   dragRef.current.start = ref.current;
   dragRef.current.setPosStart = setPos;
 }
 
+// image stops being dragged (released)
 const handleDragEnd = (e, ref, dragRef) => {
   ref.current.classList.remove('over');
 
@@ -28,21 +31,22 @@ const handleDragEnd = (e, ref, dragRef) => {
 
   ref.current.classList.remove('isDragging');
 }
-
+// image is dragged over other image
 const handleDragOver = (e, ref, dragRef, setPos) => {
   dragRef.current.end = e.target;
   dragRef.current.setPosEnd = setPos;
 }
-
+// other image has image dragged over it
 const handleDragEnter = (e, ref) => {
   ref.current.classList.add('over');
 }
-
+// other image has image dragged away from it
 const handleDragLeave = (e, ref) => {
   ref.current.classList.remove('over');
 }
-
-const handleLoad = (ref) => {
+// loading states of image
+const handleLoad = (ref, setIsRendered) => {
+  // image is in second cycle of rendering
   const handleRendering = () => {
     requestAnimationFrame(handleRender);
   }
@@ -50,14 +54,16 @@ const handleLoad = (ref) => {
   const handleRender = () => {
     ref.current.classList.remove('rendering');
     ref.current.classList.add('rendered');
+    setIsRendered(true);
   }
-
+  // image starts rendering
   requestAnimationFrame(handleRendering);
 }
 
 function CompressedImage({ file, order, dragRef, uuid }) {
 
   const [pos, setPos] = useState(order);
+  const [isRendered, setIsRendered] = useState(false);
   const ref = useRef();
 
   const [compressedImage, setCompressedImage] = useState(null);
@@ -98,7 +104,8 @@ function CompressedImage({ file, order, dragRef, uuid }) {
           style={{maxWidth: '100%', height: 'auto', backgroundColor: 'black', cursor:'move'}}
           ref={ref}
           draggable="true"
-          onLoad={() => handleLoad(ref)}
+          loading='lazy'
+          onLoad={() => handleLoad(ref, setIsRendered)}
           onDragStart={(e) => handleDragStart(e, ref, dragRef, setPos)}
           onDragOver={(e) => handleDragOver(e, ref, dragRef, setPos)}
           onDragEnter={(e) => handleDragEnter(e, ref)}
@@ -113,12 +120,19 @@ function CompressedImage({ file, order, dragRef, uuid }) {
       <div
       id={pos}
       className="image-container"
-      style={{display: 'flex', maxWidth: '19.6%', order: `${pos}`}}
+      style={{
+        display: 'flex',
+        maxWidth: '19.6%',
+        order: `${pos}`,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
       >
+        {!isRendered ? <AiOutlineLoading3Quarters className="spinner" size='30px' /> : null}
         {image}
       </div>
     </>
   )
 }
 
-export default CompressedImage;
+export { CompressedImage };

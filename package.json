@@ -1,6 +1,6 @@
 {
   "name": "react-image-upload-interface",
-  "version": "1.0.3",
+  "version": "1.0.10",
   "private": false,
   "type": "module",
   "description": "A simple image upload interface for react",
@@ -63,10 +63,16 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@mui/base": "^5.0.0-alpha.127",
     "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.2",
+    "@mui/system": "^5.12.1",
+    "babel-preset-es2015": "^6.24.1",
     "browser-image-compression": "^2.0.2",
+    "npm-check": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
     "react-image-upload-interface": "^1.0.2",
     "uuid4": "^2.0.3"
   },

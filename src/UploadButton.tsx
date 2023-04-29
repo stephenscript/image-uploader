@@ -1,5 +1,5 @@
 import react from 'react'
-import { Upload }  from '@mui/icons-material';
+import { FiUpload } from 'react-icons/fi';
 
 function UploadButton({ handleFileSelect, buttonStyle }) {
   if (!buttonStyle) {
@@ -18,10 +18,10 @@ function UploadButton({ handleFileSelect, buttonStyle }) {
       style={buttonStyle}
       title="Upload Images"
       >  
-        <Upload /> 
+        <FiUpload size='30px' />
       </label>
     </>
   )
 }
 
-export default UploadButton;
+export { UploadButton };
