@@ -1,14 +1,14 @@
 import react from 'react'
 
-function SubmitButton({ handleFileSubmit, files, style, imageContainerRef }) {
-  if (!style) {
-    style={
+function SubmitButton({ handleFileSubmit, files, buttonStyle, imageContainerRef }) {
+  if (!buttonStyle) {
+    buttonStyle = {
       backgroundColor: 'white',
       color: 'black',
       padding: '5px 10px 5px 10px',
-      borderRadius: '15px',
       cursor: 'pointer',
-      outline: '1px solid black'
+      outline: '1px solid black',
+      borderRadius: '15px',
     }
   }
 
@@ -37,8 +37,9 @@ function SubmitButton({ handleFileSubmit, files, style, imageContainerRef }) {
     <>
       <input id="submit-button" onClick={sortAndHandleFileSubmit} style={{display: 'none'}}></input>
       <label
-      for="submit-button"
-      style={style}
+      htmlFor="submit-button"
+      style={buttonStyle}
+      title="Submit Images"
       >  
         Submit
       </label>

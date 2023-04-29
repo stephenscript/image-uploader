@@ -3,10 +3,11 @@ import './ImageUploader.css'
 import CompressedImage from './CompressedImage';
 import UploadButton from './UploadButton';
 import SubmitButton from './SubmitButton';
+import uuid4 from 'uuid4';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
-import shortid from 'shortid';
-
-function ImageUploader() {
+function ImageUploader({ handleFileSubmit, uploadButtonStyle, submitButtonStyle, Width, Height }) {
+  console.log(Width)
   const ref = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [images, setImages] = useState([]);
@@ -21,12 +22,12 @@ function ImageUploader() {
     if (!uploadedFiles.length) return;
 
     const compressedImages = uploadedFiles.map((file) => {
-      const key = shortid.generate();
+      const key = uuid4();
       dragRef.current.rawFiles[key] = file;
       return (
         <CompressedImage
         key={key}
-        shortid={shortid}
+        uuid={key}
         file={file}
         order={dragRef.current.maxIndex++}
         dragRef={dragRef}
@@ -44,22 +45,27 @@ function ImageUploader() {
   const handleFileSelect = (e) => {
     setUploadedFiles(Object.values(e.target.files));
   }
-  
-  /* Callback passed as props to SubmitButton
-    const handleFileSubmit = (e, files) => {
-    return files
-    }
-  */
+
+
+  const ImagePlaceholder = (
+    <div style={{display: 'flex', paddingTop: '5%', gap: '20%', alignItems: 'center'}}>
+      <InsertPhotoIcon style={{transform: 'scale(4.8)'}}/>
+      <div>Select the 'upload images' button to begin </div>
+    </div>
+    );
 
   return (
     <>
-      <UploadButton handleFileSelect={handleFileSelect}/>
-      <SubmitButton imageContainerRef={ref} files={dragRef.current.rawFiles}/>
-      <div style={{width: '100vw', height:'100vh'}}>
-        <div className="images-container" ref={ref} style={{ display: 'flex', justifyContent: 'flex-start', alignContent: 'flex-start', width: '100%', height: '100%', flexWrap: 'wrap', gap: '2px'}}>
-          {images}
-        </div>
+    <div style={{display: 'flex', flexDirection: 'column', minWidth: Width}}>
+      <div className="buttons" style={{display: 'flex', justifyContent: 'flex-end', gap: '15px', padding: '20px', minWidth: Width}}>
+          <UploadButton handleFileSelect={handleFileSelect} style={uploadButtonStyle}/>
+          <SubmitButton handleFileSubmit={handleFileSubmit} imageContainerRef={ref} files={dragRef.current.rawFiles} style={submitButtonStyle}/>
       </div>
+      <div className="images-container" ref={ref} style={{ display: 'flex', justifyContent: 'center', alignContent: 'flex-start', width: Width, height: Height, overflow: 'scroll', flexWrap: 'wrap', gap: '2px', padding: '20px 0px 20px 0px'}}>
+          {images.length ? images : ImagePlaceholder}
+      </div>
+
+    </div>
     </>
   )
 }

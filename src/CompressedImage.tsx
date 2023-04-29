@@ -55,7 +55,7 @@ const handleLoad = (ref) => {
   requestAnimationFrame(handleRendering);
 }
 
-function CompressedImage({ file, order, dragRef, shortid }) {
+function CompressedImage({ file, order, dragRef, uuid }) {
 
   const [pos, setPos] = useState(order);
   const ref = useRef();
@@ -87,7 +87,7 @@ function CompressedImage({ file, order, dragRef, shortid }) {
         onClick={(e, ref) => {
           const child = document.getElementById(pos);
           const parent = document.querySelector('.images-container');
-          delete dragRef.current.rawFiles[shortid];
+          delete dragRef.current.rawFiles[uuid];
           parent.removeChild(child);
         }}
         >x</button>

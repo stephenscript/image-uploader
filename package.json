@@ -1,23 +1,79 @@
 {
-  "name": "image-uploader",
-  "private": true,
-  "version": "0.0.0",
+  "name": "react-image-upload-interface",
+  "version": "1.0.2",
+  "private": false,
   "type": "module",
+  "description": "A simple image upload interface for react",
+  "license": "MIT",
+  "author": "Stephen Rivas",
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "image",
+    "compression"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephenpharmd/image-uploader"
+  },
+  "main": "./dist/ImageUploader.tsx",
+  "module": "./dist/ImageUploader.tsx",
+  "exports": {
+    ".": {
+      "import": "./dist/ImageUploader.tsx",
+      "require": "./dist/ImageUploader.tsx"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "rm -rf dist && NODE_ENV=production babel src --out-dir dist --copy-files",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
+  "development": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true,
+      "es2020": true
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "dependencies": {
-    "axios": "^1.3.6",
+    "@babel/polyfill": "^7.12.1",
+    "@mui/icons-material": "^5.11.16",
     "browser-image-compression": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-loading-skeleton": "^3.2.1",
-    "shortid": "^2.2.16"
+    "react-image-upload-interface": "^1.0.2",
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.5",
+    "@babel/preset-env": "^7.21.5",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
