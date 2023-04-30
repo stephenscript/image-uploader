@@ -1,6 +1,6 @@
 {
   "name": "react-image-upload-interface",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": false,
   "type": "module",
   "description": "A simple image upload interface for react",
@@ -33,7 +33,8 @@
     "dev": "vite",
     "build": "rm -rf dist && NODE_ENV=production babel src --out-dir dist --copy-files",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.tsx\""
   },
   "browserslist": {
     "production": [
@@ -88,6 +89,7 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "prettier": "^2.8.8",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
   }
