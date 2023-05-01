@@ -10,7 +10,7 @@
 ```
 
 ```js
-import i { ImageUploader } from 'react-image-upload-interface'
+import { ImageUploader } from 'react-image-upload-interface'
 
 ```
 
@@ -57,4 +57,5 @@ import i { ImageUploader } from 'react-image-upload-interface'
 ## Contributions
 
 - Authored by Stephen Rivas
-- To contribute to [this repo](https://github.com/stephenpharmd/image-uploader), fork, clone and submit a feature branch as a pull request
+- To contribute to [this repo](https://github.com/stephenpharmd/image-uploader):
+  - fork, clone and submit a feature branch as a pull request
