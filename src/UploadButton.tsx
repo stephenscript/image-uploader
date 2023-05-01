@@ -3,12 +3,12 @@ import { FiUpload } from "react-icons/fi";
 
 interface UploadButtonProps {
   handleFileSelect: ChangeEventHandler<HTMLInputElement>;
-  buttonStyle?: CSSProperties;
+  uploadButtonStyle?: CSSProperties;
 }
 
-function UploadButton({ handleFileSelect, buttonStyle }: UploadButtonProps) {
-  if (!buttonStyle) {
-    buttonStyle = {
+function UploadButton({ handleFileSelect, uploadButtonStyle }: UploadButtonProps) {
+  if (!Object.values(uploadButtonStyle).length) {
+    uploadButtonStyle = {
       backgroundColor: "white",
       color: "black",
       cursor: "pointer",
@@ -25,7 +25,7 @@ function UploadButton({ handleFileSelect, buttonStyle }: UploadButtonProps) {
         onChange={handleFileSelect}
         style={{ display: "none" }}
       ></input>
-      <label htmlFor="upload-button" style={buttonStyle} title="Upload Images">
+      <label htmlFor="upload-button" style={uploadButtonStyle} title="Upload Images">
         <FiUpload size="30px" />
       </label>
     </>

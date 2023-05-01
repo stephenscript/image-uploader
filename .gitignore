@@ -6,7 +6,3 @@ node_modules
 
 # misc
 .DS_Store
-
-# components
-
-main.tsx

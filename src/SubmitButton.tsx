@@ -1,20 +1,21 @@
 import React, { MutableRefObject } from "react";
+import { DragRefType } from "./types";
 
 type SubmitButtonProps = {
   handleFileSubmit?: (files: File[]) => void;
-  files: { [key: string]: File };
-  buttonStyle?: React.CSSProperties;
+  dragRef: DragRefType;
+  submitButtonStyle?: React.CSSProperties;
   imageContainerRef: MutableRefObject<HTMLDivElement | null>;
 };
 
 function SubmitButton({
   handleFileSubmit,
-  files,
-  buttonStyle,
+  dragRef,
   imageContainerRef,
+  submitButtonStyle,
 }: SubmitButtonProps) {
-  if (!buttonStyle) {
-    buttonStyle = {
+  if (!Object.values(submitButtonStyle).length) {
+    submitButtonStyle = {
       backgroundColor: "white",
       color: "black",
       padding: "5px 10px 5px 10px",
@@ -23,8 +24,6 @@ function SubmitButton({
       borderRadius: "15px",
     };
   }
-
- 
 
   // sort raw files into array based on order of image elements in DOM
   const sortAndHandleFileSubmit = () => {
@@ -35,9 +34,8 @@ function SubmitButton({
 
     for (const imageContainer of imageContainers) {
       const position = parseInt(imageContainer.children[0].children[1].id);
-      orderedFiles.push(Object.values(files)[position]);
+      orderedFiles.push(Object.values(dragRef.current.rawFiles)[position]);
     }
-
      // default submit button behavior
     if (!handleFileSubmit) {
       handleFileSubmit = () => {
@@ -45,7 +43,7 @@ function SubmitButton({
         console.log("Format: (e, files) => * code to manage files * ");
       };
     } else {
-      handleFileSubmit(orderedFiles);
+      handleFileSubmit(orderedFiles[0] ? orderedFiles : []);
     }
     
   };
@@ -57,7 +55,7 @@ function SubmitButton({
         onClick={sortAndHandleFileSubmit}
         style={{ display: "none" }}
       />
-      <label htmlFor="submit-button" style={buttonStyle} title="Submit Images">
+      <label htmlFor="submit-button" style={submitButtonStyle} title="Submit Images">
         Submit
       </label>
     </>

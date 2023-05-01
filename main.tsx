@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ImageUploader } from "./ImageUploader.tsx";
+import { ImageUploader } from "./src/ImageUploader.js";
 // import ImageUploader from 'react-image-upload-interface'
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

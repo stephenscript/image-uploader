@@ -2,88 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import imageCompression from "browser-image-compression";
 import "./CompressedImage.css";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { DragRefType, CompressedImageProps } from "./types";
-
-// image starts being dragged
-const handleDragStart = (
-  e: React.DragEvent<HTMLImageElement>,
-  ref: React.RefObject<HTMLImageElement>,
-  dragRef: React.RefObject<DragRefType>,
-  setPos: React.Dispatch<React.SetStateAction<string>>
-) => {
-  if (!ref.current || !dragRef.current) return;
-  ref.current.classList.add("isDragging");
-  dragRef.current.start = ref.current;
-  dragRef.current.setPosStart = setPos;
-};
-
-// image stops being dragged (released)
-const handleDragEnd = (
-  e: React.DragEvent<HTMLImageElement>,
-  ref: React.RefObject<HTMLImageElement>,
-  dragRef: React.RefObject<DragRefType>
-) => {
-  if (!ref.current || !dragRef.current) return;
-
-  ref.current.classList.remove("over");
-  // swap the positions of the two images by exchanging their 'order' styles
-  const startOrder = dragRef.current.start?.id || "";
-  const endOrder = dragRef.current.end?.id || "";
-  dragRef.current.setPosStart(endOrder);
-  dragRef.current.setPosEnd(startOrder);
-
-  ref.current.classList.remove("isDragging");
-};
-
-// image is dragged over other image
-const handleDragOver = (
-  e: React.DragEvent<HTMLImageElement>,
-  dragRef: React.RefObject<DragRefType>,
-  setPos: React.Dispatch<React.SetStateAction<string>>
-) => {
-  if (!dragRef.current) return;
-
-  dragRef.current.end = e.target as HTMLElement;
-  dragRef.current.setPosEnd = setPos;
-};
-
-// other image has image dragged over it
-const handleDragEnter = (
-  e: React.DragEvent<HTMLImageElement>,
-  ref: React.RefObject<HTMLDivElement>
-) => {
-  if (!ref.current) return;
-  ref.current.classList.add("over");
-};
-
-// other image has image dragged away from it
-const handleDragLeave = (
-  e: React.DragEvent<HTMLImageElement>,
-  ref: React.RefObject<HTMLDivElement>
-) => {
-  if (!ref.current) return;
-  ref.current.classList.remove("over");
-};
-
-// loading states of image
-const handleLoad = (
-  ref: React.RefObject<HTMLImageElement>,
-  setIsRendered: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-  // image is in second cycle of rendering
-  const handleRendering = () => {
-    requestAnimationFrame(handleRender);
-  };
-
-  const handleRender = () => {
-    if (!ref.current) return;
-    ref.current.classList.remove("rendering");
-    ref.current.classList.add("rendered");
-    setIsRendered(true);
-  };
-  // image starts rendering
-  requestAnimationFrame(handleRendering);
-};
+import { CompressedImageProps } from "./types";
+import { handleDragStart, handleDragEnd, handleDragOver, handleDragEnter, handleDragLeave, handleLoad } from './utils.tsx';
 
 function CompressedImage({
   file,
@@ -95,10 +15,9 @@ function CompressedImage({
 }: CompressedImageProps): JSX.Element {
   const [pos, setPos] = useState(order);
   const [isRendered, setIsRendered] = useState(false);
-  const ref = useRef<HTMLImageElement>(null);
-
   const [compressedImage, setCompressedImage] = useState<string>("");
-
+  const ref = useRef<HTMLImageElement>(null);
+ 
   const compressionOptions = {
     maxSizeMB: MaxFileSize || 1,
     maxWidthOrHeight: MaxResolution || 1920,
@@ -120,15 +39,17 @@ function CompressedImage({
     compressImage();
   }, []);
 
-  const image = (
+  const ImageCard = () => {
+    return (
     <>
       <div className="image-content">
         <button
           className="x-button"
-          onClick={(e) => {
+          onClick={(_) => {
             const child = document.getElementById(pos);
             const parent = document.querySelector(".images-container");
             if (!child || !parent || !dragRef.current) return;
+            dragRef.current.fileNames.delete(dragRef.current.rawFiles[uuid].name);
             delete dragRef.current.rawFiles[uuid];
             parent.removeChild(child);
           }}
@@ -157,7 +78,8 @@ function CompressedImage({
         />
       </div>
     </>
-  );
+    )
+  };
 
   return (
     <>
@@ -175,7 +97,7 @@ function CompressedImage({
         {!isRendered ? (
           <AiOutlineLoading3Quarters className="spinner" size="30px" />
         ) : null}
-        {image}
+        <ImageCard />
       </div>
     </>
   );

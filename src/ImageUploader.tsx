@@ -5,22 +5,12 @@ import React, {
   ChangeEvent,
   MutableRefObject,
 } from "react";
-import { v4 as uuid4 } from "uuid";
+import { v4 as uuid4 } from "uuid"; 
 import { CompressedImage } from "./CompressedImage";
 import { UploadButton } from "./UploadButton";
 import { SubmitButton } from "./SubmitButton";
 import { BsCardImage } from "react-icons/bs";
-import { DragRefType } from "./types";
-
-type ImageUploaderProps = {
-  handleFileSubmit: (files: { [key: string]: File }) => void;
-  uploadButtonStyle?: React.CSSProperties;
-  submitButtonStyle?: React.CSSProperties;
-  Width: number;
-  Height: number;
-  CompressionFactor: number;
-  MaxFileSize: number;
-};
+import { DragRefType, ImageUploaderProps } from "./types";
 
 function ImageUploader({
   handleFileSubmit,
@@ -28,12 +18,13 @@ function ImageUploader({
   submitButtonStyle = {},
   Width,
   Height,
-  CompressionFactor,
+  MaxResolution,
   MaxFileSize,
 }: ImageUploaderProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [images, setImages] = useState<JSX.Element[]>([]);
+  const [showError, setShowError] = useState(false);
   const dragRef: MutableRefObject<DragRefType> = useRef({
     start: null,
     end: null,
@@ -41,6 +32,7 @@ function ImageUploader({
     setPosEnd: () => {},
     maxIndex: 0,
     rawFiles: {} as { [key: string]: File },
+    fileNames: new Set<string>()
   });
 
   useEffect(() => {
@@ -58,13 +50,13 @@ function ImageUploader({
             file={file}
             order={dragRef.current.maxIndex++}
             dragRef={dragRef}
-            CompressionFactor={CompressionFactor}
+            MaxResolution={MaxResolution}
             MaxFileSize={MaxFileSize}
           />
         );
       })
       .filter(Boolean) as JSX.Element[];
-
+    
     if (images.length) {
       setImages([...images, ...compressedImages]);
     } else {
@@ -72,10 +64,33 @@ function ImageUploader({
     }
   }, [uploadedFiles]);
 
+
+  useEffect(() => {
+    if (!showError) return;
+    setTimeout(() => setShowError(false), 2500);
+  }, [showError]);
+
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
-      setUploadedFiles(Array.from(files));
+    const fileNames = dragRef.current.fileNames;
+    const fileTypes = new Set(['image/png', 'image/jpg', 'image/jpeg']);
+    let isBadFileType = false;
+
+    const validatedFiles = [...files].filter((file) => {
+      if (fileNames.has(file.name)) return false;
+      if (!fileTypes.has(file.type)) {
+        isBadFileType = true;
+        return false;
+      }
+      fileNames.add(file.name);
+      return true;
+    });
+    if (isBadFileType) {
+      setShowError(true);
+    }
+
+    if (validatedFiles) {
+      setUploadedFiles(Array.from(validatedFiles));
     }
   };
 
@@ -95,6 +110,11 @@ function ImageUploader({
 
   return (
     <>
+      <dialog 
+      open
+      style={{display: showError ? 'block' : 'none', position: 'absolute', top:'10%', zIndex: 999999, backgroundColor: 'pink', borderRadius: '15px', fontSize: '20px'}}>
+       File type must be .png, jpg, or .jpeg!
+      </dialog>
       <div
         style={{ display: "flex", flexDirection: "column", minWidth: Width }}
       >
@@ -110,13 +130,13 @@ function ImageUploader({
         >
           <UploadButton
             handleFileSelect={handleFileSelect}
-            style={uploadButtonStyle}
+            uploadButtonStyle={uploadButtonStyle}
           />
           <SubmitButton
             handleFileSubmit={handleFileSubmit}
             imageContainerRef={ref}
-            files={dragRef.current.rawFiles}
-            style={submitButtonStyle}
+            dragRef={dragRef}
+            submitButtonStyle={submitButtonStyle}
           />
         </div>
         <div
@@ -131,7 +151,7 @@ function ImageUploader({
             overflow: "scroll",
             flexWrap: "wrap",
             gap: "2px",
-            padding: "20px 0px 20px 0px",
+            padding: "20px",
           }}
         >
           {images.length ? images : ImagePlaceholder}
