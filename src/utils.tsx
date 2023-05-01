@@ -64,7 +64,7 @@ const handleLoad = (
     requestAnimationFrame(handleRender);
   };
 
-const handleRender = () => {
+  const handleRender = () => {
     if (!ref.current) return;
     ref.current.classList.remove("rendering");
     ref.current.classList.add("rendered");
@@ -74,4 +74,11 @@ const handleRender = () => {
   requestAnimationFrame(handleRendering);
 };
 
-export { handleDragStart, handleDragEnd, handleDragOver, handleDragEnter, handleDragLeave, handleLoad };
+export {
+  handleDragStart,
+  handleDragEnd,
+  handleDragOver,
+  handleDragEnter,
+  handleDragLeave,
+  handleLoad,
+};

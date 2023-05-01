@@ -6,7 +6,10 @@ interface UploadButtonProps {
   uploadButtonStyle?: CSSProperties;
 }
 
-function UploadButton({ handleFileSelect, uploadButtonStyle }: UploadButtonProps) {
+function UploadButton({
+  handleFileSelect,
+  uploadButtonStyle,
+}: UploadButtonProps) {
   if (!Object.values(uploadButtonStyle).length) {
     uploadButtonStyle = {
       backgroundColor: "white",
@@ -25,7 +28,11 @@ function UploadButton({ handleFileSelect, uploadButtonStyle }: UploadButtonProps
         onChange={handleFileSelect}
         style={{ display: "none" }}
       ></input>
-      <label htmlFor="upload-button" style={uploadButtonStyle} title="Upload Images">
+      <label
+        htmlFor="upload-button"
+        style={uploadButtonStyle}
+        title="Upload Images"
+      >
         <FiUpload size="30px" />
       </label>
     </>

@@ -35,10 +35,13 @@ function SubmitButton({
     for (const imageContainer of imageContainers) {
       const image = imageContainer.children[0].children[1];
       const position = parseInt(image.id);
-      console.log(position, dragRef.current.maxIndex)
-      unorderedFiles[position] ? orderedFiles.push(unorderedFiles[position]) : orderedFiles.unshift(unorderedFiles[dragRef.current.maxIndex - position - 1]);
+      unorderedFiles[position]
+        ? orderedFiles.push(unorderedFiles[position])
+        : orderedFiles.unshift(
+            unorderedFiles[dragRef.current.maxIndex - position - 1]
+          );
     }
-     // default submit button behavior
+    // default submit button behavior
     if (!handleFileSubmit || !unorderedFiles.length) {
       handleFileSubmit = () => {
         console.log("Please pass a handleFileSubmit prop to Submit button");
@@ -47,7 +50,6 @@ function SubmitButton({
     } else {
       handleFileSubmit(orderedFiles[0] ? orderedFiles : []);
     }
-    
   };
 
   return (
@@ -57,7 +59,11 @@ function SubmitButton({
         onClick={sortAndHandleFileSubmit}
         style={{ display: "none" }}
       />
-      <label htmlFor="submit-button" style={submitButtonStyle} title="Submit Images">
+      <label
+        htmlFor="submit-button"
+        style={submitButtonStyle}
+        title="Submit Images"
+      >
         Submit
       </label>
     </>

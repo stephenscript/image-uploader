@@ -5,7 +5,7 @@ import React, {
   ChangeEvent,
   MutableRefObject,
 } from "react";
-import { v4 as uuid4 } from "uuid"; 
+import { v4 as uuid4 } from "uuid";
 import { CompressedImage } from "./CompressedImage";
 import { UploadButton } from "./UploadButton";
 import { SubmitButton } from "./SubmitButton";
@@ -32,7 +32,7 @@ function ImageUploader({
     setPosEnd: () => {},
     maxIndex: 0,
     rawFiles: {} as { [key: string]: File },
-    fileNames: new Set<string>()
+    fileNames: new Set<string>(),
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ function ImageUploader({
         if (!dragRef.current) return null;
         const key = uuid4();
         dragRef.current.rawFiles[key] = file;
-        
+
         return (
           <CompressedImage
             key={key}
@@ -57,14 +57,13 @@ function ImageUploader({
         );
       })
       .filter(Boolean) as JSX.Element[];
-    
+
     if (images.length) {
       setImages([...images, ...compressedImages]);
     } else {
       setImages(compressedImages);
     }
   }, [uploadedFiles]);
-
 
   useEffect(() => {
     if (!showError) return;
@@ -74,7 +73,7 @@ function ImageUploader({
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const fileNames = dragRef.current.fileNames;
-    const fileTypes = new Set(['image/png', 'image/jpg', 'image/jpeg']);
+    const fileTypes = new Set(["image/png", "image/jpg", "image/jpeg"]);
     let isBadFileType = false;
 
     const validatedFiles = [...files].filter((file) => {
@@ -111,10 +110,19 @@ function ImageUploader({
 
   return (
     <>
-      <dialog 
-      open
-      style={{display: showError ? 'block' : 'none', position: 'absolute', top:'10%', zIndex: 999999, backgroundColor: 'pink', borderRadius: '15px', fontSize: '20px'}}>
-       File type must be .png, jpg, or .jpeg!
+      <dialog
+        open
+        style={{
+          display: showError ? "block" : "none",
+          position: "absolute",
+          top: "10%",
+          zIndex: 999999,
+          backgroundColor: "pink",
+          borderRadius: "15px",
+          fontSize: "20px",
+        }}
+      >
+        File type must be .png, jpg, or .jpeg!
       </dialog>
       <div
         style={{ display: "flex", flexDirection: "column", minWidth: Width }}
