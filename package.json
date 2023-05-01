@@ -1,6 +1,6 @@
 {
   "name": "react-image-upload-interface",
-  "version": "1.1.4b",
+  "version": "1.1.6b",
   "private": false,
   "type": "module",
   "description": "A simple image upload interface for react",

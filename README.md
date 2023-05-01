@@ -28,7 +28,7 @@ import { ImageUploader } from 'react-image-upload-interface'
 ### Required Props
 
 - Use the *Width* and *Height* props to specify the width and height of the component
-- To access and array of submitted files, it's important to pass in a *handleFileSubmit* callback function:
+- To access an array of submitted files, it's important to pass in a *handleFileSubmit* callback function:
 
 ```js
   handleFileSubmit = (files) => /* code to handle raw image files */
