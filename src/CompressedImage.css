@@ -1,0 +1,111 @@
+.over {
+  filter: sepia(100%)
+}
+
+.rendering {
+  display: none;
+}
+
+.rendered {
+  animation: 1s blurIn;
+}
+
+.image-container {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0);
+  /* min-width: 150px; */
+}
+
+.image-content {
+  display: flex;
+  max-width: 100%;
+  cursor:move;
+  flex-direction: row-reverse;
+}
+
+.image-content:hover {
+  box-sizing: border-box;
+  transform: scale(1.25);
+  transition: 0.5s;
+  z-index: 999;
+}
+
+.image-content:hover .x-button {
+  display: block;
+}
+
+.x-button {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  height: 20%;
+  width: 20%;
+  opacity: 75%;
+  border: none;
+  background-color: rgb(255, 92, 92);
+  color: rgb(255, 255, 255, 75%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.spinner {
+  animation: 2s spin;
+  animation-iteration-count: infinite;
+}
+
+.x-button:active {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0, 75%);
+}
+
+.isDragging {
+  box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);
+  animation: 3s pulse;
+  animation-iteration-count: infinite;
+  transition: 1s;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);;
+  }
+
+  50% {
+    box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
+  }
+
+  90% {
+    box-shadow: 0px 0px 30px 3px rgb(255, 255, 255);
+  }
+}
+
+@keyframes blurIn {
+  0% {
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    opacity: 0%;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    -moz-filter: blur(0px);
+    -o-filter: blur(0px);
+    -ms-filter: blur(0px);
+    opacity: 100%;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+} 
