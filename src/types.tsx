@@ -21,8 +21,8 @@ export type ImageUploaderProps = {
   handleFileSubmit: (files: { [key: string]: File }) => void;
   uploadButtonStyle?: React.CSSProperties;
   submitButtonStyle?: React.CSSProperties;
-  Width?: string;
-  Height?: string;
-  MaxResolution: number;
-  MaxFileSize: number;
+  Width: string;
+  Height: string;
+  MaxResolution?: number;
+  MaxFileSize?: number;
 };
