@@ -28,16 +28,18 @@ function SubmitButton({
   // sort raw files into array based on order of image elements in DOM
   const sortAndHandleFileSubmit = () => {
     const orderedFiles: File[] = [];
-    
+    const unorderedFiles: File[] = Object.values(dragRef.current.rawFiles);
     const imageContainers = imageContainerRef.current?.children;
     if (!imageContainers) return;
 
     for (const imageContainer of imageContainers) {
-      const position = parseInt(imageContainer.children[0].children[1].id);
-      orderedFiles.push(Object.values(dragRef.current.rawFiles)[position]);
+      const image = imageContainer.children[0].children[1];
+      const position = parseInt(image.id);
+      console.log(position, dragRef.current.maxIndex)
+      unorderedFiles[position] ? orderedFiles.push(unorderedFiles[position]) : orderedFiles.unshift(unorderedFiles[dragRef.current.maxIndex - position - 1]);
     }
      // default submit button behavior
-    if (!handleFileSubmit) {
+    if (!handleFileSubmit || !unorderedFiles.length) {
       handleFileSubmit = () => {
         console.log("Please pass a handleFileSubmit prop to Submit button");
         console.log("Format: (e, files) => * code to manage files * ");

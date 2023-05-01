@@ -43,6 +43,7 @@ function ImageUploader({
         if (!dragRef.current) return null;
         const key = uuid4();
         dragRef.current.rawFiles[key] = file;
+        
         return (
           <CompressedImage
             key={key}
