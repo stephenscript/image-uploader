@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-  npm i react-image-upload-interface
+npm i react-image-upload-interface
 
 ```
 
